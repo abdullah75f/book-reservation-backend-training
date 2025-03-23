@@ -1,4 +1,4 @@
-name: Backend Tests
+name: Run Backend Tests
 
 on:
   push:
@@ -13,19 +13,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "14"
+          node-version: '16'  # Ensure you're using a compatible Node.js version
 
       - name: Install dependencies
         run: |
           npm install
+          npm install --save-dev @babel/preset-env @babel/core babel-jest
 
       - name: Run tests
-        run: |
-          export NODE_ENV=test
-          npm test
+        run: npm test
+
+      - name: Cache node_modules (optional, to speed up builds)
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
