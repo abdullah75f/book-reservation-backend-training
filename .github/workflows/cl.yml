@@ -13,7 +13,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -23,20 +22,13 @@ jobs:
         with:
           node-version: "16" # Match this with the version you're using locally
 
-      # Cache node modules
-      - name: Cache node modules
-        uses: actions/cache@v3
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+      # Clear npm cache
+      - name: Clear npm cache
+        run: npm cache clean --force
 
-      # Install dependencies
+      # Install dependencies using npm ci (for consistent installation)
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       # Run tests
       - name: Run tests
@@ -44,6 +36,6 @@ jobs:
         env:
           NODE_ENV: test
 
-      # Optionally, run with --detectOpenHandles to debug async issues
+      # Debug open handles (optional)
       - name: Debug open handles
         run: npm test -- --detectOpenHandles
