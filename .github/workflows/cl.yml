@@ -13,31 +13,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the code
+      # Checkout the code
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js
+      # Set up Node.js
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: "16" # Ensure you're using a compatible Node.js version
+          node-version: "16" # Match this with the version you're using locally
 
-      # Step 3: Install dependencies
-      - name: Install dependencies
-        run: |
-          npm install
-          npm install --save-dev @babel/preset-env @babel/core babel-jest
-
-      # Step 4: Run tests
-      - name: Run tests
-        run: npm test
-
-      # Step 5: Cache node_modules to speed up future builds
-      - name: Cache node_modules
-        uses: actions/cache@v3 # Updated to v3
+      # Cache node modules
+      - name: Cache node modules
+        uses: actions/cache@v3
         with:
-          path: node_modules
+          path: |
+            node_modules
+            ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Run tests
+      - name: Run tests
+        run: npm test
+        env:
+          NODE_ENV: test
+
+      # Optionally, run with --detectOpenHandles to debug async issues
+      - name: Debug open handles
+        run: npm test -- --detectOpenHandles
