@@ -1,4 +1,4 @@
 module.exports = {
-    database: 'mongodb://localhost/book_reservation_app',
-    secret: 'your_jwt_secret'
-  };
+  database: process.env.MONGO_URI || "mongodb://127.0.0.1:27017/yourLocalDB",
+  secret: "your_jwt_secret",
+};

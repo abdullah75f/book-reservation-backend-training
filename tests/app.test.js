@@ -1,6 +1,5 @@
-// tests/app.test.js
 const request = require("supertest");
-const app = require("../app"); // Import the app from app.js
+const app = require("../app"); 
 
 describe("Backend API", () => {
   it("should return a 200 status for the root route", async () => {

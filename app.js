@@ -7,6 +7,7 @@ const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
 const bookRoutes = require("./routes/books");
 const reservationRoutes = require("./routes/reservations");
+require("dotenv").config();
 
 // Initialize app
 const app = express();
@@ -15,9 +16,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Connect to MongoDB
 mongoose
-  .connect(config.database) // Remove useNewUrlParser and useUnifiedTopology options
+  .connect(process.env.MONGO_URI) // No extra options needed
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("Could not connect to MongoDB", err));
 

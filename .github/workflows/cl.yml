@@ -37,10 +37,10 @@ jobs:
         env:
           NODE_ENV: test
 
-      # Archive test results (updated to v4)
+      # Archive test results 
       - name: Archive test results
         if: always() # Runs even if tests fail
-        uses: actions/upload-artifact@v4 # Updated from v3 to v4
+        uses: actions/upload-artifact@v4 
         with:
           name: test-results
           path: |
