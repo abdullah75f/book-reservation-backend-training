@@ -33,4 +33,10 @@ app.get("/", (req, res) => {
   res.status(200).send("Server is running");
 });
 
+// Start server
+if (process.env.NODE_ENV !== "test") {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
+
 module.exports = app; // Export the app for testing
